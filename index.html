@@ -1,15 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preview</title>
+    <title>Next Challenge Preview</title>
     <style>
-        body { margin: 0; padding: 0; background: #000; }
-        img { width: 100%; display: block; }
+        body { margin: 0; padding: 0; background: #000; overflow-y: hidden; }
+        .image-box {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        img { max-width: 100%; max-height: 100%; object-fit: contain; }
     </style>
 </head>
 <body>
-    <img src="images/image.jpg" alt="이미지">
+
+    <div class="image-box"><img src="images/1.jpg" alt="1"></div>
+    <div class="image-box"><img src="images/2.jpg" alt="2"></div>
+    <div class="image-box"><img src="images/3.jpg" alt="3"></div>
+
+    <script>
+        let index = 0;
+        const boxes = document.querySelectorAll('.image-box');
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                index = (index + 1) % boxes.length;
+                boxes[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else if (event.key === 'ArrowLeft') {
+                index = (index - 1 + boxes.length) % boxes.length;
+                boxes[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    </script>
 </body>
 </html>
