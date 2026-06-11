@@ -9,18 +9,20 @@
             margin: 0; 
             padding: 0; 
             background: #000; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
         }
         .image-box {
-            width: 100vw; /* 가로폭을 화면에 꽉 차게 */
+            width: 100vw;
+            /* 높이를 고정하지 않아 긴 이미지도 스크롤로 다 볼 수 있음 */
             display: flex;
             justify-content: center;
+            /* 이미지 사이의 명확한 구분을 위해 여백 추가 */
+            margin-bottom: 100px; 
+            /* scroll-margin을 통해 방향키 이동 시 상단에 딱 붙게 함 */
+            scroll-margin-top: 0px;
         }
         img { 
-            width: 100%; /* 가로폭 맞춤 */
-            height: auto; /* 비율 유지 */
+            width: 100%; 
+            height: auto; 
             display: block; 
         }
     </style>
@@ -36,15 +38,17 @@
         const boxes = document.querySelectorAll('.image-box');
 
         document.addEventListener('keydown', function(event) {
-            // 우측 방향키를 눌렀을 때만 실행
+            // 우측 방향키를 눌렀을 때만 이동
             if (event.key === 'ArrowRight') {
-                index++;
-                // 마지막 이미지 이후로는 넘기지 않음
-                if (index < boxes.length) {
-                    // 해당 이미지 박스의 상단 위치로 부드럽게 이동
+                if (index < boxes.length - 1) {
+                    index++;
+                    // 다음 이미지 박스의 맨 위로 부드럽게 이동
                     boxes[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                } else {
-                    index = boxes.length - 1; // 마지막 인덱스 유지
+                }
+            } else if (event.key === 'ArrowLeft') {
+                if (index > 0) {
+                    index--;
+                    boxes[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             }
         });
