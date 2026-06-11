@@ -5,31 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Next Challenge Preview</title>
     <style>
-        body { 
-            margin: 0; 
-            padding: 0; 
-            background: #000; 
-        }
+        body { margin: 0; padding: 0; background: #000; overflow: hidden; }
+        
         .image-box {
+            display: none; /* 일단 다 숨김 */
             width: 100vw;
-            /* 높이를 고정하지 않아 긴 이미지도 스크롤로 다 볼 수 있음 */
-            display: flex;
+            height: 100vh; /* 화면 높이 고정 */
+            overflow-y: auto; /* 핵심: 박스 내부에서만 스크롤 허용 */
             justify-content: center;
-            /* 이미지 사이의 명확한 구분을 위해 여백 추가 */
-            margin-bottom: 100px; 
-            /* scroll-margin을 통해 방향키 이동 시 상단에 딱 붙게 함 */
-            scroll-margin-top: 0px;
         }
+        
+        .image-box.active { display: flex; } /* 활성화된 것만 표시 */
+        
         img { 
-            width: 100%; 
-            height: auto; 
-            display: block; 
+            width: 100%; /* 가로폭 꽉 채움 */
+            height: auto; /* 세로 길이는 이미지에 맞게 자동 늘어남 */
+            display: block;
         }
     </style>
 </head>
 <body>
 
-    <div class="image-box"><img src="images/1.jpg" alt="1"></div>
+    <div class="image-box active"><img src="images/1.jpg" alt="1"></div>
     <div class="image-box"><img src="images/2.jpg" alt="2"></div>
     <div class="image-box"><img src="images/3.jpg" alt="3"></div>
 
@@ -38,17 +35,17 @@
         const boxes = document.querySelectorAll('.image-box');
 
         document.addEventListener('keydown', function(event) {
-            // 우측 방향키를 눌렀을 때만 이동
             if (event.key === 'ArrowRight') {
                 if (index < boxes.length - 1) {
+                    boxes[index].classList.remove('active');
                     index++;
-                    // 다음 이미지 박스의 맨 위로 부드럽게 이동
-                    boxes[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    boxes[index].classList.add('active');
                 }
             } else if (event.key === 'ArrowLeft') {
                 if (index > 0) {
+                    boxes[index].classList.remove('active');
                     index--;
-                    boxes[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    boxes[index].classList.add('active');
                 }
             }
         });
