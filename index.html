@@ -5,22 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Next Challenge Preview</title>
     <style>
+        /* 1. 기본 설정: 스크롤 막고 배경 검은색 */
         body { margin: 0; padding: 0; background: #000; overflow: hidden; }
         
+        /* 2. 이미지 박스: 한 장씩만 보이게 함 */
         .image-box {
             display: none; /* 일단 다 숨김 */
             width: 100vw;
             height: 100vh; /* 화면 높이 고정 */
-            overflow-y: auto; /* 핵심: 박스 내부에서만 스크롤 허용 */
+            overflow-y: auto; /* 핵심: 박스 내부에서만 긴 이미지 스크롤 */
             justify-content: center;
+            align-items: flex-start; /* 이미지 상단부터 정렬 */
         }
         
-        .image-box.active { display: flex; } /* 활성화된 것만 표시 */
+        /* 활성화된 것만 보여줌 */
+        .image-box.active { display: flex; }
         
+        /* 3. 이미지 설정: 압축 방지 및 드래그 방지 */
         img { 
-            width: 100%; /* 가로폭 꽉 채움 */
-            height: auto; /* 세로 길이는 이미지에 맞게 자동 늘어남 */
-            display: block;
+            width: 100%;       /* 가로를 화면에 딱 맞춤 */
+            height: auto;      /* 비율 유지하면서 세로로 늘어남 */
+            display: block;    /* 이미지 하단 여백 제거 */
+            pointer-events: none; /* 클릭/드래그 방지 */
+            user-select: none;    /* 글자 선택 방지 */
         }
     </style>
 </head>
@@ -35,13 +42,16 @@
         const boxes = document.querySelectorAll('.image-box');
 
         document.addEventListener('keydown', function(event) {
+            // 오른쪽 방향키: 다음 이미지
             if (event.key === 'ArrowRight') {
                 if (index < boxes.length - 1) {
                     boxes[index].classList.remove('active');
                     index++;
                     boxes[index].classList.add('active');
                 }
-            } else if (event.key === 'ArrowLeft') {
+            } 
+            // 왼쪽 방향키: 이전 이미지
+            else if (event.key === 'ArrowLeft') {
                 if (index > 0) {
                     boxes[index].classList.remove('active');
                     index--;
